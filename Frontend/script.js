@@ -34,7 +34,7 @@ const CONFIG = {
     region: "Delhi NCR",
     capacity: 8500,
     modelVersion: "GridPulse Forecast v1.4",
-    baseUrl: "http://localhost:8000/api",
+    baseUrl: "https://gridpulse-api.onrender.com/api",
     animationDuration: 1200,
     toastDuration: 3500,
 };
