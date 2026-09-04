@@ -329,10 +329,10 @@ def fetch_weather(
         print(f"Weather API Error (Fallback triggered): {e}")
         # Fallback to synthetic weather if API is rate limited (common on Render free tier)
         dates = pd.date_range(start=start, periods=hours, freq="h")
-        hour_of_day = dates.hour
+        hour_of_day = dates.hour.values
         # Simple diurnal synthetic data for Delhi
-        temps = 25 + 8 * np.sin(np.pi * (hour_of_day - 6) / 12).clip(0) - 2 * np.cos(np.pi * hour_of_day / 12)
-        solar = 800 * np.sin(np.pi * (hour_of_day - 6) / 12).clip(0)
+        temps = 25 + 8 * np.clip(np.sin(np.pi * (hour_of_day - 6) / 12), 0, None) - 2 * np.cos(np.pi * hour_of_day / 12)
+        solar = 800 * np.clip(np.sin(np.pi * (hour_of_day - 6) / 12), 0, None)
         
         frame = pd.DataFrame({
             "timestamp": dates,
