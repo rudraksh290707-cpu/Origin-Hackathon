@@ -3,6 +3,7 @@ numpy
 scikit-learn
 xgboost
 fastapi
-uvicorn
+uvicorn[standard]
 joblib
 requests
+pydantic
