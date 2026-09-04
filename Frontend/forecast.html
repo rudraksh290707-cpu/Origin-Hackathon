@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPULSE — Forecast</title>
+    <meta name="description" content="GRIDPULSE — Short-term electricity demand prediction and model performance metrics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- ============================================================
+         PAGE CONTENT — FORECAST
+         Edit the HTML below to change the Forecast page layout.
+         ============================================================ -->
+    <template id="page-template">
+        <section class="page" id="page-forecast" aria-label="Forecast">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Demand Forecast</h2>
+                    <p class="page-subtitle">Short-term electricity demand prediction</p>
+                </div>
+                <div class="page-controls">
+                    <div class="control-group">
+                        <label class="control-label">Region</label>
+                        <div class="control-value">Delhi NCR</div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Horizon</label>
+                        <select class="control-select" id="forecastHorizon" aria-label="Forecast horizon">
+                            <option value="24h" selected>24 Hours</option>
+                            <option value="7d">7 Days</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Model</label>
+                        <div class="control-value">GridPulse v1.4</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forecast Chart -->
+            <div class="panel chart-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Demand Forecast</h3>
+                    <div class="chart-controls">
+                        <button class="chart-tab active" data-forecast-range="24h">24 HOURS</button>
+                        <button class="chart-tab" data-forecast-range="7d">7 DAYS</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper chart-wrapper-lg">
+                    <canvas id="forecastChart" aria-label="Demand forecast chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Model Performance -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Model Performance</h3>
+                    <span class="panel-badge">Validation metrics — demo model</span>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-label">MAE</span>
+                        <span class="metric-value" id="metricMae">142 <small>MW</small></span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">RMSE</span>
+                        <span class="metric-value" id="metricRmse">198 <small>MW</small></span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">MAPE</span>
+                        <span class="metric-value" id="metricMape">2.4<small>%</small></span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Peak Error</span>
+                        <span class="metric-value" id="metricPeakError">1.8<small>%</small></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forecast Table -->
+            <div class="panel">
+                <h3 class="panel-title">Hourly Forecast Table</h3>
+                <div class="table-wrapper">
+                    <table class="data-table" id="forecastTable" aria-label="Hourly forecast data">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Predicted</th>
+                                <th>Lower Bound</th>
+                                <th>Upper Bound</th>
+                                <th>Temperature</th>
+                                <th>Capacity Util.</th>
+                                <th>Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forecastTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPULSE — Insights</title>
+    <meta name="description" content="GRIDPULSE — AI-generated grid insights and planning signals.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- ============================================================
+         PAGE CONTENT — INSIGHTS
+         Edit the HTML below to change the Insights page layout.
+         ============================================================ -->
+    <template id="page-template">
+        <section class="page" id="page-insights" aria-label="Insights">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Grid Insights</h2>
+                    <p class="page-subtitle">AI-generated observations and planning signals</p>
+                </div>
+            </div>
+
+            <div class="insights-grid" id="insightsGrid">
+                <!-- Insight cards are populated dynamically by script.js -->
+                <!-- You can also add static insight cards here if needed -->
+            </div>
+        </section>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>

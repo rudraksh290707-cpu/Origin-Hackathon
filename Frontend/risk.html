@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPULSE — Grid Risk</title>
+    <meta name="description" content="GRIDPULSE — Grid risk monitoring. Identify potential capacity stress before it occurs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- ============================================================
+         PAGE CONTENT — GRID RISK
+         Edit the HTML below to change the Grid Risk page layout.
+         ============================================================ -->
+    <template id="page-template">
+        <section class="page" id="page-risk" aria-label="Grid Risk">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Grid Risk Monitor</h2>
+                    <p class="page-subtitle">Identify potential capacity stress before it occurs</p>
+                </div>
+            </div>
+
+            <!-- Risk Overview -->
+            <div class="risk-overview-grid">
+                <div class="panel risk-main-panel">
+                    <div class="risk-central">
+                        <span class="risk-label-lg">Current Risk Level</span>
+                        <div class="risk-badge-lg high" id="riskBadgeLg">HIGH RISK</div>
+                        <div class="risk-stats">
+                            <div class="risk-stat">
+                                <span class="risk-stat-label">Utilization</span>
+                                <span class="risk-stat-value" id="riskUtil">99.6%</span>
+                            </div>
+                            <div class="risk-stat">
+                                <span class="risk-stat-label">Capacity</span>
+                                <span class="risk-stat-value">8,500 MW</span>
+                            </div>
+                            <div class="risk-stat">
+                                <span class="risk-stat-label">Expected Peak</span>
+                                <span class="risk-stat-value" id="riskPeak">8,470 MW</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Gauge -->
+                <div class="panel">
+                    <h3 class="panel-title">Capacity Utilization Gauge</h3>
+                    <div class="gauge-container">
+                        <canvas id="riskGauge" width="280" height="180" aria-label="Risk gauge showing capacity utilization"></canvas>
+                        <div class="gauge-value" id="gaugeValue">99.6%</div>
+                    </div>
+                    <div class="gauge-legend">
+                        <span class="gauge-label normal">0–70% Normal</span>
+                        <span class="gauge-label watch">70–85% Watch</span>
+                        <span class="gauge-label high">85–100% High</span>
+                        <span class="gauge-label critical">&gt;100% Critical</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Factors -->
+            <div class="panel">
+                <h3 class="panel-title">Risk Factors</h3>
+                <div class="risk-factors-grid" id="riskFactorsGrid"></div>
+            </div>
+
+            <!-- Risk Timeline -->
+            <div class="panel">
+                <h3 class="panel-title">24-Hour Risk Timeline</h3>
+                <p class="panel-subtitle">Hover over segments for details</p>
+                <div class="risk-timeline" id="riskTimeline" role="img" aria-label="24-hour risk timeline"></div>
+                <div class="timeline-tooltip" id="timelineTooltip" role="tooltip" aria-hidden="true"></div>
+            </div>
+        </section>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>

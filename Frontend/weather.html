@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPULSE — Weather</title>
+    <meta name="description" content="GRIDPULSE — Weather intelligence and its association with electricity demand.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- ============================================================
+         PAGE CONTENT — WEATHER
+         Edit the HTML below to change the Weather page layout.
+         ============================================================ -->
+    <template id="page-template">
+        <section class="page" id="page-weather" aria-label="Weather">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Weather Intelligence</h2>
+                    <p class="page-subtitle">Weather conditions and their association with electricity demand</p>
+                </div>
+            </div>
+
+            <div class="weather-grid">
+                <!-- Weather Cards -->
+                <div class="weather-cards" id="weatherCards">
+                    <div class="panel weather-card-main">
+                        <div class="weather-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 56 56" width="56" height="56" fill="none" stroke="var(--amber)" stroke-width="2">
+                                <circle cx="28" cy="28" r="10" fill="rgba(255,183,77,0.15)"/>
+                                <line x1="28" y1="6" x2="28" y2="14"/><line x1="28" y1="42" x2="28" y2="50"/>
+                                <line x1="6" y1="28" x2="14" y2="28"/><line x1="42" y1="28" x2="50" y2="28"/>
+                                <line x1="12.4" y1="12.4" x2="18" y2="18"/><line x1="38" y1="38" x2="43.6" y2="43.6"/>
+                                <line x1="12.4" y1="43.6" x2="18" y2="38"/><line x1="38" y1="18" x2="43.6" y2="12.4"/>
+                            </svg>
+                        </div>
+                        <div class="weather-card-temp" id="weatherPageTemp">38°C</div>
+                        <div class="weather-card-condition" id="weatherPageCondition">Hot / Clear</div>
+                        <div class="weather-card-feels" id="weatherPageFeels">Feels like 41°C</div>
+                    </div>
+                    <div class="panel weather-stat-card">
+                        <i data-lucide="droplets" class="weather-stat-icon" aria-hidden="true"></i>
+                        <span class="weather-stat-label">Humidity</span>
+                        <span class="weather-stat-value" id="weatherPageHumidity">61%</span>
+                    </div>
+                    <div class="panel weather-stat-card">
+                        <i data-lucide="wind" class="weather-stat-icon" aria-hidden="true"></i>
+                        <span class="weather-stat-label">Wind</span>
+                        <span class="weather-stat-value" id="weatherPageWind">12 km/h</span>
+                    </div>
+                    <div class="panel weather-stat-card">
+                        <i data-lucide="cloud" class="weather-stat-icon" aria-hidden="true"></i>
+                        <span class="weather-stat-label">Cloud Cover</span>
+                        <span class="weather-stat-value" id="weatherPageCloud">15%</span>
+                    </div>
+                    <div class="panel weather-stat-card">
+                        <i data-lucide="sun" class="weather-stat-icon" aria-hidden="true"></i>
+                        <span class="weather-stat-label">Solar Radiation</span>
+                        <span class="weather-stat-value" id="weatherPageSolar">820 W/m²</span>
+                    </div>
+                </div>
+
+                <!-- Temperature Chart -->
+                <div class="panel chart-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">24-Hour Temperature Forecast</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="weatherTempChart" aria-label="24-hour temperature forecast"></canvas>
+                    </div>
+                </div>
+
+                <!-- Demand vs Temperature -->
+                <div class="panel chart-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">Demand vs Temperature</h3>
+                        <span class="panel-badge">Correlation</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="demandTempChart" aria-label="Demand vs temperature scatter chart"></canvas>
+                    </div>
+                    <p class="chart-note">Higher temperatures are associated with increased electricity demand during peak hours.</p>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>

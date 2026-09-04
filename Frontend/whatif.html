@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPULSE — What-If Lab</title>
+    <meta name="description" content="GRIDPULSE — Simulate how changing real-world conditions could affect grid demand.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app"></div>
+
+    <!-- ============================================================
+         PAGE CONTENT — WHAT-IF LAB
+         Edit the HTML below to change the What-If Lab page layout.
+         This is the hero feature of the frontend.
+         ============================================================ -->
+    <template id="page-template">
+        <section class="page" id="page-whatif" aria-label="What-If Lab">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">What-If Lab</h2>
+                    <p class="page-subtitle">Simulate how changing real-world conditions could affect grid demand</p>
+                </div>
+            </div>
+
+            <div class="whatif-layout">
+                <!-- Controls Panel -->
+                <div class="panel whatif-controls-panel">
+                    <h3 class="panel-title">Scenario Parameters</h3>
+                    <p class="panel-subtitle">Adjust conditions and run simulation</p>
+
+                    <div class="whatif-sliders">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="sliderTemp" class="slider-label">
+                                    <i data-lucide="thermometer" aria-hidden="true"></i>
+                                    Temperature
+                                </label>
+                                <span class="slider-value" id="sliderTempVal">38°C</span>
+                            </div>
+                            <input type="range" id="sliderTemp" min="30" max="45" value="38" step="0.5" class="slider" aria-label="Temperature in Celsius">
+                            <div class="slider-range"><span>30°C</span><span>45°C</span></div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="sliderHumidity" class="slider-label">
+                                    <i data-lucide="droplets" aria-hidden="true"></i>
+                                    Humidity
+                                </label>
+                                <span class="slider-value" id="sliderHumidityVal">61%</span>
+                            </div>
+                            <input type="range" id="sliderHumidity" min="20" max="90" value="61" step="1" class="slider" aria-label="Humidity percentage">
+                            <div class="slider-range"><span>20%</span><span>90%</span></div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="sliderSolar" class="slider-label">
+                                    <i data-lucide="sun" aria-hidden="true"></i>
+                                    Solar Generation
+                                </label>
+                                <span class="slider-value" id="sliderSolarVal">620 MW</span>
+                            </div>
+                            <input type="range" id="sliderSolar" min="0" max="1500" value="620" step="10" class="slider" aria-label="Solar generation in MW">
+                            <div class="slider-range"><span>0 MW</span><span>1,500 MW</span></div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="sliderGrowth" class="slider-label">
+                                    <i data-lucide="trending-up" aria-hidden="true"></i>
+                                    Demand Growth
+                                </label>
+                                <span class="slider-value" id="sliderGrowthVal">0%</span>
+                            </div>
+                            <input type="range" id="sliderGrowth" min="-10" max="15" value="0" step="0.5" class="slider" aria-label="Demand growth percentage">
+                            <div class="slider-range"><span>−10%</span><span>+15%</span></div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" id="runSimBtn" aria-label="Run simulation">
+                        <i data-lucide="play" aria-hidden="true"></i>
+                        <span>RUN SIMULATION</span>
+                    </button>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="whatif-results">
+                    <!-- Initial empty state -->
+                    <div class="panel whatif-empty" id="whatifEmpty">
+                        <div class="empty-state">
+                            <i data-lucide="flask-conical" aria-hidden="true"></i>
+                            <h3>Configure & Simulate</h3>
+                            <p>Adjust the parameters and click <strong>RUN SIMULATION</strong> to see how conditions affect grid demand.</p>
+                        </div>
+                    </div>
+
+                    <!-- Results (hidden initially) -->
+                    <div class="whatif-results-content hidden" id="whatifResults">
+                        <div class="panel">
+                            <div class="whatif-result-grid">
+                                <div class="whatif-result-card">
+                                    <h4>Predicted Peak</h4>
+                                    <div class="result-comparison">
+                                        <div class="result-baseline">
+                                            <span class="result-label">Baseline</span>
+                                            <span class="result-value" id="simBaseline">8,470 MW</span>
+                                        </div>
+                                        <i data-lucide="arrow-right" class="result-arrow" aria-hidden="true"></i>
+                                        <div class="result-simulated">
+                                            <span class="result-label">Simulated</span>
+                                            <span class="result-value" id="simPeak">—</span>
+                                        </div>
+                                    </div>
+                                    <div class="result-change" id="simChange">—</div>
+                                </div>
+
+                                <div class="whatif-result-card">
+                                    <h4>Capacity Utilization</h4>
+                                    <div class="result-comparison">
+                                        <div class="result-baseline">
+                                            <span class="result-label">Baseline</span>
+                                            <span class="result-value" id="whatifBaselineUtil">99.6%</span>
+                                        </div>
+                                        <i data-lucide="arrow-right" class="result-arrow" aria-hidden="true"></i>
+                                        <div class="result-simulated">
+                                            <span class="result-label">Simulated</span>
+                                            <span class="result-value" id="simUtil">—</span>
+                                        </div>
+                                    </div>
+                                    <div class="result-status" id="simStatus">—</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario Chart -->
+                        <div class="panel chart-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Baseline vs Simulated Demand</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="whatifChart" aria-label="Baseline vs simulated demand chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Impact Summary -->
+                        <div class="panel">
+                            <h3 class="panel-title">Impact Summary</h3>
+                            <div class="impact-grid" id="impactGrid">
+                                <div class="impact-item">
+                                    <span class="impact-label">Peak Demand</span>
+                                    <span class="impact-value" id="impactPeak">—</span>
+                                </div>
+                                <div class="impact-item">
+                                    <span class="impact-label">Peak Time</span>
+                                    <span class="impact-value" id="impactTime">15:00</span>
+                                </div>
+                                <div class="impact-item">
+                                    <span class="impact-label">Capacity Margin</span>
+                                    <span class="impact-value" id="impactMargin">—</span>
+                                </div>
+                                <div class="impact-item">
+                                    <span class="impact-label">Grid Status</span>
+                                    <span class="impact-value" id="impactStatus">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
